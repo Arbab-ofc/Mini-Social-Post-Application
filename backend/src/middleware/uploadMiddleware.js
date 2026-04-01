@@ -1,24 +1,24 @@
-const fs = require('fs');
-const path = require('path');
 const multer = require('multer');
-
-const uploadDir = path.resolve(__dirname, '..', '..', 'uploads');
-
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadDir),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname || '').toLowerCase();
-    const safeExt = ext || '.jpg';
-    cb(null, `${Date.now()}-${Math.round(Math.random() * 1e9)}${safeExt}`);
-  }
-});
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 const allowedMimeTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
 const maxImageSizeBytes = 5 * 1024 * 1024;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'mini-social-posts',
+    resource_type: 'image',
+    allowed_formats: ['png', 'jpg', 'jpeg', 'webp']
+  }
+});
 
 const fileFilter = (req, file, cb) => {
   if (allowedMimeTypes.includes(file.mimetype)) {

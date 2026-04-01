@@ -27,6 +27,7 @@
 ## Quick Navigation
 
 - [Project Overview](#project-overview)
+- [One-Click Deploy](#one-click-deploy)
 - [Feature Set](#feature-set)
 - [Tech Stack](#tech-stack)
 - [Architecture](#architecture)
@@ -42,6 +43,28 @@
 ## Project Overview
 
 Mini Social is a production-style, internship-ready full-stack social posting app with JWT authentication, image uploads, and a public feed. It is optimized for mobile-first interaction while staying responsive on tablet and desktop.
+
+## One-Click Deploy
+
+### Backend (Render Blueprint)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Arbab-ofc/Mini-Social-Post-Application)
+
+Uses `backend/render.yaml` and creates the backend service in one flow.
+
+### Frontend (Vercel)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Arbab-ofc/Mini-Social-Post-Application&project-name=mini-social-post-frontend&root-directory=frontend&env=VITE_API_BASE_URL)
+
+Creates a Vercel project from `frontend/` directly.
+
+### One-Click Order
+
+1. Click Render deploy first and finish backend setup.
+2. Copy the Render backend URL.
+3. Click Vercel deploy and set `VITE_API_BASE_URL` to your Render URL.
+4. Copy the Vercel frontend URL.
+5. In Render service env, set `CLIENT_URL` to your Vercel URL, then redeploy backend.
 
 ### Assignment Scope Covered
 
@@ -63,7 +86,7 @@ Mini Social is a production-style, internship-ready full-stack social posting ap
 | Likes | Toggle like with persistent state and user metadata |
 | Comments | Comment create + count updates + structured data |
 | Share | Native share + clipboard fallback with deep-link URL |
-| Uploads | Multer local uploads, static serving, preview, type/size validation |
+| Uploads | Multer + Cloudinary hosted image upload with type/size validation |
 | UI System | MUI-only design, custom theme, rounded modern layout |
 | Loading UX | MUI skeleton placeholders for composer and feed cards |
 | Ops | Health endpoint for deployment monitoring |
@@ -97,7 +120,7 @@ Frontend (React + MUI)
   -> Axios API Client
   -> Express REST API (JWT Protected Routes)
   -> MongoDB Atlas (users, posts)
-  -> Local uploads/ served by backend
+  -> Cloudinary hosted media storage
 ```
 
 ## System Map
@@ -108,7 +131,7 @@ graph LR
   F --> A[Axios Client]
   A --> B[Express API Backend]
   B --> M[(MongoDB Atlas)]
-  B --> S[/uploads static files/]
+  B --> C[(Cloudinary Media Storage)]
   B --> J[JWT Auth Layer]
   B --> H[/api/health/]
   F --> D[/post/:id deep-link route/]
@@ -197,6 +220,9 @@ PORT=5001
 MONGODB_URI=mongodb+srv://arbab2201156ec_db_user:j9V1Wwq5kV2Zbnlb@minisocialpostapplicati.g24i2ps.mongodb.net/?appName=MiniSocialPostApplication
 JWT_SECRET=change_this_to_a_secure_secret
 CLIENT_URL=http://localhost:5173
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
 ### Frontend: `frontend/.env.example`
@@ -268,6 +294,9 @@ npm run dev:frontend
    - `MONGODB_URI=<atlas-uri>`
    - `JWT_SECRET=<strong-secret>`
    - `CLIENT_URL=<frontend-domain>`
+   - `CLOUDINARY_CLOUD_NAME=<cloudinary-cloud-name>`
+   - `CLOUDINARY_API_KEY=<cloudinary-api-key>`
+   - `CLOUDINARY_API_SECRET=<cloudinary-api-secret>`
 
 ### Database Deployment (MongoDB Atlas)
 

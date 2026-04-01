@@ -63,7 +63,7 @@ const getPostById = async (req, res, next) => {
 const createPost = async (req, res, next) => {
   try {
     const text = String(req.body.text || '').trim();
-    const image = req.file ? `/uploads/${req.file.filename}` : '';
+    const image = req.file?.path || '';
 
     if (!text && !image) {
       return res.status(400).json({ message: 'Post must contain text or image' });
