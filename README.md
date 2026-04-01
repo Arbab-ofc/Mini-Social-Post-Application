@@ -31,6 +31,7 @@
 - [Feature Set](#feature-set)
 - [Tech Stack](#tech-stack)
 - [Architecture](#architecture)
+- [Diagrams](#diagrams)
 - [Folder Structure](#folder-structure)
 - [API Reference](#api-reference)
 - [Environment Variables](#environment-variables)
@@ -123,7 +124,9 @@ Frontend (React + MUI)
   -> Cloudinary hosted media storage
 ```
 
-## System Map
+## Diagrams
+
+### System Map
 
 ```mermaid
 graph LR
@@ -137,24 +140,82 @@ graph LR
   F --> D[/post/:id deep-link route/]
 ```
 
-## App Flow
+### App Flow
 
 ```mermaid
 flowchart TD
   A[Signup] --> B[Login]
-  B --> C[Fetch Public Feed]
-  C --> D[Create Post: Text/Image/Both]
-  D --> E[Feed Updates Instantly]
-  C --> F[Like Post]
-  C --> G[Comment on Post]
-  C --> I[Share Post]
-  I --> J[Copy clean URL or Native Share]
-  J --> K[Open shared /post/:id link]
-  F --> E
-  G --> E
-  K --> L[Load single post details]
-  E --> H[Persist to MongoDB posts/users]
-  L --> H
+  B --> C[Load Feed]
+  C --> D[Create Post]
+  C --> E[Like]
+  C --> F[Comment]
+  C --> G[Share]
+  D --> H[Optimistic UI Update]
+  E --> H
+  F --> H
+  G --> I[Create /post/:id URL]
+  I --> J[Native Share or Copy Link]
+  J --> K[Open Shared Link]
+  K --> L[Load Single Post]
+  H --> M[Persist to MongoDB]
+  L --> M
+```
+
+### Data Model Map
+
+```mermaid
+erDiagram
+  USERS ||--o{ POSTS : authors
+  POSTS {
+    objectId _id
+    objectId user
+    string username
+    string text
+    string image
+    array likes
+    array comments
+    date createdAt
+    date updatedAt
+  }
+  USERS {
+    objectId _id
+    string username
+    string email
+    string password
+    date createdAt
+    date updatedAt
+  }
+```
+
+### Request Lifecycle
+
+```mermaid
+sequenceDiagram
+  participant UI as Frontend (React)
+  participant API as Backend (Express)
+  participant DB as MongoDB
+  participant CDN as Cloudinary
+
+  UI->>API: POST /api/posts (multipart text+image)
+  API->>CDN: Upload image
+  CDN-->>API: Hosted image URL
+  API->>DB: Save post (with URL)
+  DB-->>API: Created post
+  API-->>UI: Post payload
+  UI-->>UI: Instant feed update
+```
+
+### Deployment Flow
+
+```mermaid
+flowchart LR
+  GH[GitHub Repo] --> R[Render Backend]
+  GH --> V[Vercel Frontend]
+  R --> A[(MongoDB Atlas)]
+  R --> C[(Cloudinary)]
+  V --> U[Users]
+  U --> V
+  V --> R
 ```
 
 ## Folder Structure
