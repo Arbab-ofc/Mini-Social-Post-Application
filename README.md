@@ -28,6 +28,7 @@
 
 - [Project Overview](#project-overview)
 - [Live Links](#live-links)
+- [Test Credentials](#test-credentials)
 - [One-Click Deploy](#one-click-deploy)
 - [Feature Set](#feature-set)
 - [Tech Stack](#tech-stack)
@@ -70,6 +71,21 @@ Mini Social is a production-style, internship-ready full-stack social posting ap
 - Frontend (Deployment URL): `https://mini-social-post-application-alpvrofri-arbab-arshads-projects.vercel.app`
 - Backend API: `https://mini-social-post-application-d98n.onrender.com`
 - Backend Health: `https://mini-social-post-application-d98n.onrender.com/api/health`
+
+## Test Credentials
+
+Use this account to test login and social actions on the live app:
+
+- Email: `demo.mini.social@example.com`
+- Username: `testuser`
+- Password: `Test@12345`
+
+Sample seeded post from this account:
+- `Demo post for assignment testing.`
+
+Note:
+- These are public demo credentials for assignment review only.
+- Change or remove them for production use.
 
 ## One-Click Deploy
 
