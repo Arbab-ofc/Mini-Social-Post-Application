@@ -27,6 +27,7 @@
 ## Quick Navigation
 
 - [Project Overview](#project-overview)
+- [Live Links](#live-links)
 - [One-Click Deploy](#one-click-deploy)
 - [Feature Set](#feature-set)
 - [Tech Stack](#tech-stack)
@@ -44,6 +45,31 @@
 ## Project Overview
 
 Mini Social is a production-style, internship-ready full-stack social posting app with JWT authentication, image uploads, and a public feed. It is optimized for mobile-first interaction while staying responsive on tablet and desktop.
+
+## Live Links
+
+<p>
+  <a href="https://mini-social-post-application-phi.vercel.app" target="_blank">
+    <img alt="Live Frontend" src="https://img.shields.io/badge/Live_Frontend-mini--social--post--application--phi.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white" />
+  </a>
+  <a href="https://mini-social-post-application-alpvrofri-arbab-arshads-projects.vercel.app" target="_blank">
+    <img alt="Vercel Deployment URL" src="https://img.shields.io/badge/Vercel_Deployment-Open-111111?style=for-the-badge&logo=vercel&logoColor=white" />
+  </a>
+</p>
+
+<p>
+  <a href="https://mini-social-post-application-d98n.onrender.com" target="_blank">
+    <img alt="Live Backend API" src="https://img.shields.io/badge/Live_Backend-mini--social--post--application--d98n.onrender.com-46E3B7?style=for-the-badge&logo=render&logoColor=111" />
+  </a>
+  <a href="https://mini-social-post-application-d98n.onrender.com/api/health" target="_blank">
+    <img alt="API Health Endpoint" src="https://img.shields.io/badge/API_Health-/api/health-1B5E20?style=for-the-badge" />
+  </a>
+</p>
+
+- Frontend (Primary): `https://mini-social-post-application-phi.vercel.app`
+- Frontend (Deployment URL): `https://mini-social-post-application-alpvrofri-arbab-arshads-projects.vercel.app`
+- Backend API: `https://mini-social-post-application-d98n.onrender.com`
+- Backend Health: `https://mini-social-post-application-d98n.onrender.com/api/health`
 
 ## One-Click Deploy
 
