@@ -61,6 +61,7 @@ const FeedPage = () => {
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
   const maxImageSizeBytes = 5 * 1024 * 1024;
+  const extractPostId = (value) => String(value || '').match(/[a-f0-9]{24}/i)?.[0] || '';
 
   const showSnackbar = (message, severity = 'info') => {
     setSnackbar({ open: true, message, severity });
@@ -255,10 +256,14 @@ const FeedPage = () => {
       return;
     }
 
-    const url = `${window.location.origin}/post/${post._id}`;
+    const cleanId = extractPostId(post._id);
+    if (!cleanId) {
+      showSnackbar('Invalid post link', 'error');
+      return;
+    }
+
+    const url = `${window.location.origin}/post/${cleanId}`;
     const shareData = {
-      title: `Post by ${post.username}`,
-      text: post.text ? post.text.slice(0, 120) : 'Check out this post on Mini Social',
       url
     };
 

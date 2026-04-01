@@ -27,6 +27,7 @@ const normalizePost = (post, currentUserId) => {
 
 const PostDetailsPage = () => {
   const { id } = useParams();
+  const normalizedId = String(id || '').match(/[a-f0-9]{24}/i)?.[0] || '';
   const navigate = useNavigate();
   const { user, isAuthenticated } = useAuth();
 
@@ -40,9 +41,15 @@ const PostDetailsPage = () => {
   };
 
   const loadPost = async () => {
+    if (!normalizedId) {
+      setPost(null);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
-      const { data } = await api.get(`/posts/${id}`);
+      const { data } = await api.get(`/posts/${normalizedId}`);
       setPost(normalizePost(data.post, user?._id));
     } catch (error) {
       setPost(null);
@@ -54,12 +61,12 @@ const PostDetailsPage = () => {
 
   useEffect(() => {
     loadPost();
-  }, [id, user?._id]);
+  }, [normalizedId, user?._id]);
 
   const handleLike = async () => {
     if (!isAuthenticated) {
       showSnackbar('Login required to like posts', 'warning');
-      navigate('/login', { state: { from: `/post/${id}` } });
+      navigate('/login', { state: { from: `/post/${normalizedId || id}` } });
       return;
     }
 
@@ -77,7 +84,7 @@ const PostDetailsPage = () => {
     setActionLoading((prev) => ({ ...prev, like: true }));
 
     try {
-      const { data } = await api.post(`/posts/${id}/like`);
+      const { data } = await api.post(`/posts/${normalizedId}/like`);
       setPost(normalizePost(data.post, user._id));
     } catch (error) {
       setPost(previous);
@@ -90,7 +97,7 @@ const PostDetailsPage = () => {
   const handleComment = async (text) => {
     if (!isAuthenticated) {
       showSnackbar('Login required to comment', 'warning');
-      navigate('/login', { state: { from: `/post/${id}` } });
+      navigate('/login', { state: { from: `/post/${normalizedId || id}` } });
       return false;
     }
 
@@ -115,7 +122,7 @@ const PostDetailsPage = () => {
     setActionLoading((prev) => ({ ...prev, comment: true }));
 
     try {
-      const { data } = await api.post(`/posts/${id}/comment`, { text });
+      const { data } = await api.post(`/posts/${normalizedId}/comment`, { text });
       setPost(normalizePost(data.post, user._id));
       return true;
     } catch (error) {
@@ -130,10 +137,14 @@ const PostDetailsPage = () => {
   const handleShare = async () => {
     if (!post?._id) return;
 
-    const url = `${window.location.origin}/post/${post._id}`;
+    const cleanId = String(post._id).match(/[a-f0-9]{24}/i)?.[0] || normalizedId;
+    if (!cleanId) {
+      showSnackbar('Invalid post link', 'error');
+      return;
+    }
+
+    const url = `${window.location.origin}/post/${cleanId}`;
     const shareData = {
-      title: `Post by ${post.username}`,
-      text: post.text ? post.text.slice(0, 120) : 'Check out this post on Mini Social',
       url
     };
 
@@ -187,7 +198,7 @@ const PostDetailsPage = () => {
             actionLoading={actionLoading}
             onNeedAuth={() => {
               showSnackbar('Please login to interact', 'warning');
-              navigate('/login', { state: { from: `/post/${id}` } });
+              navigate('/login', { state: { from: `/post/${normalizedId || id}` } });
             }}
             onLike={handleLike}
             onComment={handleComment}
