@@ -275,6 +275,9 @@ npm run dev:frontend
 3. Output directory: `dist`
 4. Add env variable:
    - `VITE_API_BASE_URL=https://<render-backend-domain>`
+5. SPA routing support for deep links is included:
+   - `frontend/vercel.json` for Vercel rewrites
+   - `frontend/public/_redirects` for Netlify redirects
 
 ### CORS Note
 

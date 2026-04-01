@@ -147,12 +147,16 @@ const PostDetailsPage = () => {
     }
 
     if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(url);
-      showSnackbar('Post link copied to clipboard', 'success');
-      return;
+      try {
+        await navigator.clipboard.writeText(url);
+        showSnackbar('Post link copied to clipboard', 'success');
+        return;
+      } catch (error) {
+        // Continue to final fallback when clipboard is blocked.
+      }
     }
 
-    showSnackbar(url, 'info');
+    showSnackbar(`Share link: ${url}`, 'info');
   };
 
   return (
