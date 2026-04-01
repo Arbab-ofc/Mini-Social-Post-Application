@@ -110,6 +110,8 @@ graph LR
   B --> M[(MongoDB Atlas)]
   B --> S[/uploads static files/]
   B --> J[JWT Auth Layer]
+  B --> H[/api/health/]
+  F --> D[/post/:id deep-link route/]
 ```
 
 ## App Flow
@@ -122,9 +124,14 @@ flowchart TD
   D --> E[Feed Updates Instantly]
   C --> F[Like Post]
   C --> G[Comment on Post]
+  C --> I[Share Post]
+  I --> J[Copy clean URL or Native Share]
+  J --> K[Open shared /post/:id link]
   F --> E
   G --> E
+  K --> L[Load single post details]
   E --> H[Persist to MongoDB posts/users]
+  L --> H
 ```
 
 ## Folder Structure
