@@ -62,6 +62,7 @@ Mini Social is a production-style, internship-ready full-stack social posting ap
 | Post Creation | Text, image, or mixed post with validation |
 | Likes | Toggle like with persistent state and user metadata |
 | Comments | Comment create + count updates + structured data |
+| Share | Native share + clipboard fallback with deep-link URL |
 | Uploads | Multer local uploads, static serving, preview, type/size validation |
 | UI System | MUI-only design, custom theme, rounded modern layout |
 | Loading UX | MUI skeleton placeholders for composer and feed cards |
@@ -171,6 +172,7 @@ Mini-Social-Post-Application/
 ### Post Routes
 
 - `GET /api/posts`
+- `GET /api/posts/:id`
 - `POST /api/posts` (protected, multipart: `text`, `image`)
 - `POST /api/posts/:id/like` (protected)
 - `POST /api/posts/:id/comment` (protected)
@@ -302,3 +304,5 @@ Handled across frontend and backend:
 - Styled responsive experience across breakpoints
 - Skeleton loading UI for feed and composer
 - Health check endpoint (`/api/health`)
+- Share button with Web Share API and clipboard fallback
+- Deep-link page route for shared posts (`/post/:id`)

@@ -40,6 +40,26 @@ const getPosts = async (req, res, next) => {
   }
 };
 
+const getPostById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.isValidObjectId(id)) {
+      return res.status(400).json({ message: 'Invalid post id' });
+    }
+
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    const currentUserId = req.user?._id || null;
+
+    return res.status(200).json({ post: shapePost(post, currentUserId) });
+  } catch (error) {
+    return next(error);
+  }
+};
+
 const createPost = async (req, res, next) => {
   try {
     const text = String(req.body.text || '').trim();
@@ -129,6 +149,7 @@ const commentOnPost = async (req, res, next) => {
 
 module.exports = {
   getPosts,
+  getPostById,
   createPost,
   likePost,
   commentOnPost

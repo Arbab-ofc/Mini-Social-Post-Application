@@ -5,6 +5,7 @@ import BottomNavBar from './components/BottomNavBar';
 import ProtectedRoute from './components/ProtectedRoute';
 import FeedPage from './pages/FeedPage';
 import LoginPage from './pages/LoginPage';
+import PostDetailsPage from './pages/PostDetailsPage';
 import ProfilePage from './pages/ProfilePage';
 import SignupPage from './pages/SignupPage';
 
@@ -22,6 +23,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Navigate to="/feed" replace />} />
           <Route path="/feed" element={<FeedPage />} />
+          <Route path="/post/:id" element={<PostDetailsPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route

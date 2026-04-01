@@ -12,7 +12,7 @@ const BottomNavBar = () => {
 
   const navValue = location.pathname.startsWith('/profile')
     ? '/profile'
-    : location.pathname.startsWith('/feed')
+    : location.pathname.startsWith('/feed') || location.pathname.startsWith('/post/')
       ? '/feed'
       : location.pathname;
 

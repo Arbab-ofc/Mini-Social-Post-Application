@@ -249,6 +249,37 @@ const FeedPage = () => {
     }
   };
 
+  const handleShare = async (post) => {
+    if (!post?._id || String(post._id).startsWith('temp-')) {
+      showSnackbar('Please wait for post to finish saving before sharing', 'warning');
+      return;
+    }
+
+    const url = `${window.location.origin}/post/${post._id}`;
+    const shareData = {
+      title: `Post by ${post.username}`,
+      text: post.text ? post.text.slice(0, 120) : 'Check out this post on Mini Social',
+      url
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        return;
+      } catch (error) {
+        if (error?.name === 'AbortError') return;
+      }
+    }
+
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(url);
+      showSnackbar('Post link copied to clipboard', 'success');
+      return;
+    }
+
+    showSnackbar(url, 'info');
+  };
+
   return (
     <Container maxWidth="lg" sx={{ py: { xs: 2, md: 3 } }}>
       <Stack spacing={2.5}>
@@ -402,6 +433,7 @@ const FeedPage = () => {
                     }}
                     onLike={() => handleLike(post._id)}
                     onComment={(text) => handleComment(post._id, text)}
+                    onShare={() => handleShare(post)}
                   />
                 </Box>
               ))

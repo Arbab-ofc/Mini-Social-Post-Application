@@ -15,6 +15,7 @@ import {
 import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded';
+import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
 import { getImageUrl } from '../api/axios';
 import { formatDate } from '../utils/formatDate';
 import CommentSection from './CommentSection';
@@ -32,6 +33,7 @@ const PostCard = ({
   canInteract,
   onLike,
   onComment,
+  onShare,
   actionLoading,
   onNeedAuth
 }) => {
@@ -97,6 +99,16 @@ const PostCard = ({
               onClick={() => setShowComments((prev) => !prev)}
             >
               {post.commentsCount}
+            </Button>
+
+            <Button
+              size="small"
+              variant="text"
+              startIcon={<ShareRoundedIcon />}
+              onClick={onShare}
+              sx={{ borderRadius: 999 }}
+            >
+              Share
             </Button>
           </Stack>
 
