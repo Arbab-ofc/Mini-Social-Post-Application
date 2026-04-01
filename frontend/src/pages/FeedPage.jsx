@@ -3,9 +3,10 @@ import { Alert, Box, Button, Card, CardContent, Chip, Container, Divider, Snackb
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import EmptyState from '../components/EmptyState';
-import Loader from '../components/Loader';
 import PostCard from '../components/PostCard';
 import PostComposer from '../components/PostComposer';
+import PostComposerSkeleton from '../components/PostComposerSkeleton';
+import PostCardSkeleton from '../components/PostCardSkeleton';
 import { useAuth } from '../context/AuthContext';
 
 const normalizePost = (post, currentUserId) => {
@@ -58,6 +59,8 @@ const FeedPage = () => {
   const [creating, setCreating] = useState(false);
   const [actionLoading, setActionLoading] = useState({});
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const allowedImageTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'];
+  const maxImageSizeBytes = 5 * 1024 * 1024;
 
   const showSnackbar = (message, severity = 'info') => {
     setSnackbar({ open: true, message, severity });
@@ -311,7 +314,9 @@ const FeedPage = () => {
           }}
         >
           <Box sx={{ position: { md: 'sticky' }, top: { md: 92 } }}>
-            {isAuthenticated ? (
+            {loading && isAuthenticated ? (
+              <PostComposerSkeleton />
+            ) : isAuthenticated ? (
               <PostComposer
                 text={composer.text}
                 imageFile={composer.imageFile}
@@ -322,8 +327,14 @@ const FeedPage = () => {
                 onImageChange={(event) => {
                   const file = event.target.files?.[0];
                   if (!file) return;
-                  if (!file.type.startsWith('image/')) {
-                    setComposerError('Please upload a valid image file');
+                  if (!allowedImageTypes.includes(file.type)) {
+                    setComposerError('Invalid image type. Allowed: PNG, JPG, JPEG, WEBP');
+                    event.target.value = '';
+                    return;
+                  }
+                  if (file.size > maxImageSizeBytes) {
+                    setComposerError('Image size must be 5MB or smaller');
+                    event.target.value = '';
                     return;
                   }
                   setComposer((prev) => ({ ...prev, imageFile: file, imagePreview: URL.createObjectURL(file) }));
@@ -362,7 +373,11 @@ const FeedPage = () => {
             {!canPost && isAuthenticated && composerError && <Alert severity="error">{composerError}</Alert>}
 
             {loading ? (
-              <Loader />
+              <>
+                {[1, 2, 3].map((key) => (
+                  <PostCardSkeleton key={key} />
+                ))}
+              </>
             ) : sortedPosts.length === 0 ? (
               <EmptyState />
             ) : (

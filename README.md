@@ -62,8 +62,10 @@ Mini Social is a production-style, internship-ready full-stack social posting ap
 | Post Creation | Text, image, or mixed post with validation |
 | Likes | Toggle like with persistent state and user metadata |
 | Comments | Comment create + count updates + structured data |
-| Uploads | Multer local uploads, static serving, image preview |
+| Uploads | Multer local uploads, static serving, preview, type/size validation |
 | UI System | MUI-only design, custom theme, rounded modern layout |
+| Loading UX | MUI skeleton placeholders for composer and feed cards |
+| Ops | Health endpoint for deployment monitoring |
 | Responsiveness | Mobile, tablet, and desktop optimized |
 
 ## Tech Stack
@@ -172,6 +174,10 @@ Mini-Social-Post-Application/
 - `POST /api/posts` (protected, multipart: `text`, `image`)
 - `POST /api/posts/:id/like` (protected)
 - `POST /api/posts/:id/comment` (protected)
+
+### System Route
+
+- `GET /api/health` (status, timestamp, uptime)
 
 ## Environment Variables
 
@@ -284,6 +290,8 @@ Handled across frontend and backend:
 - empty comment submission
 - invalid post ID
 - upload and server/network failures
+- invalid image MIME type rejection
+- image size rejection above 5MB
 
 ## Bonus Implemented
 
@@ -292,3 +300,5 @@ Handled across frontend and backend:
 - Relative date formatting
 - Feed filters (newest, oldest, random, my posts)
 - Styled responsive experience across breakpoints
+- Skeleton loading UI for feed and composer
+- Health check endpoint (`/api/health`)

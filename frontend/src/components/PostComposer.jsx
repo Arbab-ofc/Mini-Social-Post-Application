@@ -32,7 +32,8 @@ const PostComposer = ({ text, imageFile, imagePreview, loading, error, onTextCha
               variant="outlined"
               sx={{
                 width: { xs: '100%', sm: 'auto' },
-                flexShrink: 0
+                flexShrink: 0,
+                maxWidth: { xs: '100%', sm: 'fit-content' }
               }}
             >
               {imageFile ? 'Change Image' : 'Upload Image'}

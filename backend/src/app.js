@@ -21,7 +21,12 @@ app.use(morgan('dev'));
 app.use('/uploads', express.static(path.resolve(__dirname, '..', 'uploads')));
 
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ message: 'Server healthy' });
+  res.status(200).json({
+    status: 'ok',
+    message: 'Server healthy',
+    timestamp: new Date().toISOString(),
+    uptimeSeconds: Math.floor(process.uptime())
+  });
 });
 
 app.use('/api/auth', authRoutes);
